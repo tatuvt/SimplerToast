@@ -17,14 +17,13 @@ import org.json.JSONException
 class MainActivity : AppCompatActivity()
 {
 
-    val movies: ArrayList<String> = ArrayList()
-
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var mData = createMovieList()
+
+        var mData = ArrayList<Message>()
 
         message_list.layoutManager = LinearLayoutManager(this)
         message_list.adapter = MovieAdapter(mData)
@@ -33,11 +32,33 @@ class MainActivity : AppCompatActivity()
 
         secret_btn.setOnClickListener {
             toastAllSecrets(this)
+
+            getJsonData()
+            parseJson(getJsonData())
         }
 
 
     }
 
+    private fun getJsonData(): JSONArray
+    {
+        val jsonString = assets.open("data.txt").bufferedReader().use { it.readLine()}
+        val jsonArray = JSONArray(jsonString)
+        return jsonArray
+    }
+
+    private fun parseJson(data: JSONArray) : ArrayList<Message> {
+        val messageList = ArrayList<Message>()
+        for (i in 0 until data.length()){
+            //Create a new Message object and populate it with the data from data
+            //Take note: data is a JSONArray that holds JSONObjects.
+            val curMsg = data[i] as JSONObject
+            val newMsg = Message(curMsg.getLong("id"), curMsg.getString("message"), curMsg.getString("secret"))
+            //Add to messageList
+            messageList.add(newMsg)
+        }
+        return messageList
+    }
 
     private fun createMovieList() : List<Movies> {
         var movieList = ArrayList<Movies>()

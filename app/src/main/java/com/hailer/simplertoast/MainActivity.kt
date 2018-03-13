@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity()
         setContentView(R.layout.activity_main)
 
 
-        var mData = ArrayList<Message>()
+        val mData = parseJson(getJsonData())
 
         message_list.layoutManager = LinearLayoutManager(this)
         message_list.adapter = MovieAdapter(mData)

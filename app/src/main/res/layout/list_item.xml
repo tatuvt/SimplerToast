@@ -7,17 +7,18 @@
     android:padding="10dp">
 
  <TextView
-     android:id="@+id/movie_name"
+     android:id="@+id/message_content"
      android:layout_width="wrap_content"
      android:layout_height="wrap_content"
-     android:textSize="20dp"
-     tools:text="Movie name" />
+     android:textSize="20sp"
+     android:textColor="#000000"
+     tools:text="Message" />
 
  <TextView
-     android:id="@+id/movie_id"
+     android:id="@+id/message_sent"
      android:layout_width="wrap_content"
      android:layout_height="wrap_content"
-     android:textSize="15dp"
-     tools:text="Number" />
+     android:textSize="14sp"
+     tools:text="Message sent time" />
 
 </LinearLayout>

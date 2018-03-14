@@ -9,7 +9,7 @@ import android.widget.Toast
 import com.hailer.simplertoast.R.layout.list_item
 import kotlinx.android.synthetic.main.list_item.view.*
 
-class MovieAdapter (val data: ArrayList<Message>) :
+class MovieAdapter (val data: ArrayList<Message>, val clickListener: (Message) -> Unit) :
         RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -20,15 +20,17 @@ class MovieAdapter (val data: ArrayList<Message>) :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as MessageViewHolder).bind(data[position])
+        (holder as MessageViewHolder).bind(data[position], clickListener)
     }
 
     override fun getItemCount() = data.size
 
     class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(part: Message) {
-            itemView.movie_name.text = part.message
-            itemView.movie_id.text = part.id.toString() }
+        fun bind(part: Message, clickListener: (Message) -> Unit) {
+            itemView.message_content.text = part.message
+            itemView.message_sent.text = part.created
+            itemView.setOnClickListener {clickListener(part)}
+            }
         }
     }
 

@@ -7,12 +7,15 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.*
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import org.joda.time.DateTime
 import org.json.JSONArray
 import org.json.JSONObject
 import org.json.JSONTokener
 import org.json.JSONException
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity()
 {
@@ -26,7 +29,7 @@ class MainActivity : AppCompatActivity()
         val mData = parseJson(getJsonData())
 
         message_list.layoutManager = LinearLayoutManager(this)
-        message_list.adapter = MovieAdapter(mData)
+        message_list.adapter = MovieAdapter(mData, {part : Message -> messageItemClicked(part)})
 
 
 
@@ -53,11 +56,16 @@ class MainActivity : AppCompatActivity()
             //Create a new Message object and populate it with the data from data
             //Take note: data is a JSONArray that holds JSONObjects.
             val curMsg = data[i] as JSONObject
-            val newMsg = Message(curMsg.getLong("id"), curMsg.getString("message"), curMsg.getString("secret"))
+            val newMsg = Message(curMsg.getLong("id"), curMsg.getString("message"), curMsg.getString("secret"), curMsg.getString("created"))
             //Add to messageList
             messageList.add(newMsg)
         }
+        messageList.sortedWith(compareBy({it.id}, {it.created}))
         return messageList
+    }
+
+    private fun messageItemClicked(part: Message) {
+        Toast.makeText(this, "Message ID: ${part.id}", Toast.LENGTH_SHORT).show()
     }
 
     private fun createMovieList() : List<Movies> {
